@@ -12,6 +12,30 @@ class Grid
         configure_cells
     end
 
+    def to_png
+        img_width = @totalRows * @size
+        img_height = @totalColumns * @size
+        background = ChunkyPNG::Color::WHITE
+        wall = ChunkyPNG::Color::BLACK
+
+        img = ChunkyPNG::Image.new(img_width+1, img_height+1, background)
+        each_cell do |cell|
+            x1 = cell.column * @size
+            x2 = (cell.column + 1) * @size
+            y1 = cell.row * @size
+            y2 = (cell.row + 1) * @size
+pry
+            img.line(x1, y1, x2, y1, wall) unless cell.linked?(cell.north)
+            img.line(x1, y1, x1, y2, wall) unless cell.linked?(cell.west)
+            img.line(x2, y1, x2, y2, wall) unless cell.linked?(cell.east)
+            img.line(x1, y2, x2, y2, wall) unless cell.linked?(cell.south)
+            # img.line(x1, y1, x2, y1, wall) unless cell.north
+            # img.line(x1, y1, x1, y2, wall) unless cell.west
+            # img.line(x2, y1, x2, y2, wall) unless cell.linked?(cell.east)
+            # img.line(x1, y2, x2, y2, wall) unless cell.linked?(cell.south)
+        end
+        img
+    end
     def prepare_grid
         Array.new(@totalRows) do |row|
             Array.new(@totalColumns) do |column|

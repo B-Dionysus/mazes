@@ -11,9 +11,9 @@ class Cell
         @links = {}
     end
 
-    def link(cell)
-        @links[cell] = true
-        cell.link(self)
+    def link
+        @links[self.east] = true
+        @links[self.west] = true
     end
 
     def unlink(cell)
@@ -21,6 +21,10 @@ class Cell
         cell.unlink(self)
     end
         
+    def linked?(cell)
+        @links.include?(cell)
+    end
+
     def neighbors
         list = [];
         list << north if north
