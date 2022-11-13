@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
+require 'pry'
 require './grid.rb'
 
 g = Grid.new()
-puts g.grid[0].column
+output = g.walk(g.grid_array[0][0], "")
+puts output
+
+
+        

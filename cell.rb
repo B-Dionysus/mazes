@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 class Cell
     attr_reader :row, :column, :total_rows, :total_columns 
-    attr_accessor :north, :south, :east, :west
+    attr_accessor :north, :south, :east, :west, :front
 
     def initialize(row, column, grid_width, grid_height, box_size)
         @row = row
@@ -20,7 +20,7 @@ class Cell
         @links[cell].delete
         cell.unlink(self)
     end
-
+        
     def neighbors
         list = [];
         list << north if north
@@ -28,5 +28,9 @@ class Cell
         list << east if east
         list << west if west
         list
+    end
+    
+    def carriage_return
+        @north ? @front: false
     end
 end
