@@ -2,12 +2,15 @@
 require 'pry'
 require './grid.rb'
 
-g = Grid.new()
-# output = g.walk(g.grid_array[0][0], "")
-# puts output
-origin=g.grid_array[0][1]
-origin=g.grid_array[0][2]
-origin.link()
+g = Grid.new(5,5)
+
+origin=g.grid_array[0][0]
+puts origin.row
+puts origin.east.nil?
+g.walk(origin)
+puts "------"
+puts origin.linked?(origin.east)
+puts "------"
 # g.grid_array[0][0].link(g.grid_array[0][1])
 img = g.to_png
 img.save "maze.png"

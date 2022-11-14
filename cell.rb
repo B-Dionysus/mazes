@@ -6,15 +6,19 @@ class Cell
     def initialize(row, column, grid_width, grid_height, box_size)
         @row = row
         @column = column
+        # puts "---> " + row.to_s + " " + column.to_s
         @total_rows = grid_width
         @total_columns = grid_height
         @links = {}
     end
 
-    def link
-        @links[self.east] = true
-        @links[self.west] = true
+    def link(cell, bidi=true)
+        # puts "Link: " + cell.row.to_s + " " + cell.column.to_s
+        @links[cell] = true
+        cell.link(self, false) if bidi
+        self
     end
+        
 
     def unlink(cell)
         @links[cell].delete
@@ -22,6 +26,8 @@ class Cell
     end
         
     def linked?(cell)
+        # puts "Linked? " + cell.row.to_s + " " + cell.column.to_s
+        puts @links.include?(cell)
         @links.include?(cell)
     end
 
