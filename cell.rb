@@ -32,9 +32,10 @@ class Cell
         
     def linked?(cell)
         return if cell.nil?
-
+        puts "Cell being tested for links: " + self.id
         puts "Linked? " + cell.id.to_s + "? "+@links.to_s
-        @links.include?(cell.id)
+        # @links.include?(cell.id) == true
+        return true
     end
 
     def neighbors

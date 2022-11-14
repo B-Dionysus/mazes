@@ -2,7 +2,7 @@
 require 'pry'
 require './grid.rb'
 
-g = Grid.new(5,5)
+g = Grid.new(4,4)
 
 origin=g.grid_array[0][0]
 puts origin.row

@@ -14,30 +14,30 @@ class Grid
     end
     def wall_coords(cell, size)
         x = []
-        x[0] = cell.column * size        # x1
-        x[1] = (cell.column + 1) * size  # x2
-        x[2] = cell.row * size       # y1
-        x[3] = (cell.row + 1) * size # y2
+        x[0] = cell.column * size        # x1 west
+        x[1] = (cell.column + 1) * size  # x2 east
+        x[2] = cell.row * size       # y1 top
+        x[3] = (cell.row + 1) * size # y2 bottom
         return x
     end
 
     def draw_walls(wall_array, target, img)
         # puts "Draw Linked? " +target.linked?(target.east).to_s
-        puts "Draw Linked? " +target.linked?(target.west).to_s
-        img.line(wall_array[0], wall_array[2], wall_array[1], wall_array[2], 'black') unless target.linked?(target.north)
+        puts "Draw Linked? " +target.linked?(target.west.id).to_s if target.west
+        img.line(wall_array[0], wall_array[2], wall_array[1], wall_array[2], 'green') unless target.linked?(target.north)
         img.line(wall_array[0], wall_array[2], wall_array[0], wall_array[3], 'red') unless target.linked?(target.west)
         img.line(wall_array[1], wall_array[2], wall_array[1], wall_array[3], 'blue') unless target.linked?(target.east)
         img.line(wall_array[0], wall_array[3], wall_array[1], wall_array[3], 'purple') unless target.linked?(target.south)
     end
 
     def to_png
-        img_width = @totalRows * @size
-        img_height = @totalColumns * @size
+        img_width = @totalColumns * @size
+        img_height = @totalRows * @size
         background = ChunkyPNG::Color::WHITE
         wall = ChunkyPNG::Color::BLACK
         target = @grid_array[0][0]
         target2 = @grid_array[0][0].east
-        # puts target.row.to_s + " " + target.column.to_s
+        puts "-->"+target.id + " -> " + target2.id
         img = ChunkyPNG::Image.new(img_width+1, img_height+1, background)
         centerC = target.column*@size + (@size/2)
         centerR = target.row*@size + (@size/2)
@@ -45,6 +45,7 @@ class Grid
 
         wall_array = wall_coords(target, @size)
         draw_walls(wall_array, target, img)
+        puts "~~~~~"
         wall_array = wall_coords(target2, @size)
         draw_walls(wall_array, target2, img)
 
@@ -80,6 +81,7 @@ class Grid
         #         Cell.new(row, column, @totalRows, @totalColumns, @size)
         #     end
         # end
+
         for i in 0..@totalRows do
             row_array = []
             for j in 0..@totalColumns do
@@ -93,12 +95,12 @@ class Grid
     def configure_cells
        each_cell do |cell|
             row, col = cell.row, cell.column
-            cell.north = @grid_array[row+1][col] if ((row+1) < @totalRows)
+            cell.south = @grid_array[row+1][col] if ((row+1) < @totalRows)
             cell.east = @grid_array[row][col+1] if ((col+1) < @totalColumns)
-            cell.south = @grid_array[row-1][col] if ((row-1) > 0)
+            cell.north = @grid_array[row-1][col] if ((row-1) > 0)
             cell.west = @grid_array[row][col-1] if ((col-1) > 0)
             
-            cell.front = @grid_array[row+1][0] if cell.north
+            cell.front = @grid_array[row+1][0] if cell.south
             # cell.north = @grid_array[row][col-1] if ((col-1) >= 0)
             # cell.south = @grid_array[row][col+1] if ((col+1) < @totalColumns)
             # cell.west = @grid_array[row-1][col] if ((row-1) >= 0)
